@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fogazza Ferrari | Cardápio</title>
+<style>
+:root{--bg:#090909;--card:#141414;--gold:#f3b51b;--red:#d40000;--white:#fff;--muted:#c9c9c9}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif}
+header{padding:34px 18px 24px;text-align:center;background:linear-gradient(145deg,#080808,#1b1004);border-bottom:2px solid var(--gold)}
+.logo{font-size:42px;font-weight:900;letter-spacing:1px;color:var(--gold);text-shadow:2px 2px 0 #6e0000}.tag{margin:8px auto 18px;color:#eee}
+.btn{display:inline-block;border:0;border-radius:999px;padding:13px 20px;font-weight:800;cursor:pointer;text-decoration:none}
+.red{background:var(--red);color:#fff}.gold{background:var(--gold);color:#111}
+.wrap{max-width:980px;margin:auto;padding:20px 14px 110px}
+.hero{padding:20px;border:1px solid #3c2b0b;border-radius:20px;background:radial-gradient(circle at 50% 0,#3a2208,#121212 55%);text-align:center;margin-bottom:24px}
+.hero h1{margin:0 0 8px;font-size:30px}.hero p{color:var(--muted);margin:0 0 16px}
+.category{margin:30px 0 12px;color:var(--gold);font-size:24px;border-left:5px solid var(--red);padding-left:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.item{background:var(--card);border:1px solid #292929;border-radius:16px;padding:15px;display:flex;flex-direction:column;justify-content:space-between;min-height:135px}
+.item h3{margin:0 0 7px;font-size:17px}.item p{margin:0 0 12px;color:#aaa;font-size:13px}.price{color:var(--gold);font-weight:900;font-size:18px;margin-bottom:10px}
+.item button{width:100%;border:0;border-radius:10px;padding:11px;background:var(--red);color:#fff;font-weight:800;cursor:pointer}
+.cart{position:fixed;right:16px;bottom:16px;left:16px;max-width:520px;margin:auto;background:#181818;border:1px solid var(--gold);border-radius:18px;padding:14px;box-shadow:0 10px 35px #000}
+.cart-top{display:flex;justify-content:space-between;align-items:center}.cart-title{font-weight:900}.count{color:var(--gold)}
+.cart-list{max-height:180px;overflow:auto;margin:10px 0}.line{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid #292929;font-size:14px}.remove{background:none;border:0;color:#ff7777;cursor:pointer}
+.total{display:flex;justify-content:space-between;font-size:19px;font-weight:900;margin:10px 0}.empty{color:#999;font-size:13px}
+footer{text-align:center;padding:35px 15px;color:#888;border-top:1px solid #222}.wa{color:#8cff9a}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">FOGAZZA FERRARI</div>
+  <div class="tag">Crocante por fora. Recheada por dentro. 🔥</div>
+  <a class="btn red" href="#cardapio">VER CARDÁPIO</a>
+</header>
+
+<main class="wrap">
+<section class="hero">
+  <h1>Peça sua Fogazza agora!</h1>
+  <p>Fogazzas fritas na hora, com massa artesanal e recheios generosos.</p>
+  <a class="btn gold" href="#cardapio">ESCOLHER MEU PEDIDO</a>
+</section>
+
+<div id="cardapio"></div>
+
+<section><h2 class="category">🥩 Fogazzas de Carne</h2><div class="grid" id="carne"></div></section>
+<section><h2 class="category">🧀 Fogazzas de Queijo</h2><div class="grid" id="queijo"></div></section>
+<section><h2 class="category">🍗 Fogazzas de Frango</h2><div class="grid" id="frango"></div></section>
+<section><h2 class="category">🌶️ Fogazzas de Calabresa</h2><div class="grid" id="calabresa"></div></section>
+<section><h2 class="category">🌴 Fogazzas de Palmito</h2><div class="grid" id="palmito"></div></section>
+<section><h2 class="category">🍕 Pepperoni</h2><div class="grid" id="pepperoni"></div></section>
+<section><h2 class="category">🥦 Fogazzas de Brócolis</h2><div class="grid" id="brocolis"></div></section>
+<section><h2 class="category">⭐ Especiais</h2><div class="grid" id="especiais"></div></section>
+<section><h2 class="category">🍫 Doces</h2><div class="grid" id="doces"></div></section>
+<section><h2 class="category">🥤 Bebidas</h2><div class="grid" id="bebidas"></div></section>
+</main>
+
+<div class="cart">
+  <div class="cart-top"><span class="cart-title">🛒 Seu pedido <span class="count" id="count">(0)</span></span><span class="wa">WhatsApp</span></div>
+  <div class="cart-list" id="cartList"><div class="empty">Adicione os produtos acima.</div></div>
+  <div class="total"><span>Total</span><span id="total">R$ 0,00</span></div>
+  <button class="btn red" style="width:100%" onclick="sendWhatsApp()">📲 FINALIZAR PELO WHATSAPP</button>
+</div>
+
+<footer>FOGAZZA FERRARI • Pedido direto pelo WhatsApp<br><span class="wa">(11) 9 3925-9203</span></footer>
+
+<script>
+const WPP="5511939259203";
+const menus={
+carne:[
+["Carne",25],["Carne com queijo",25],["Carne com cheddar",25],["Carne com milho, ovo e ervilha",25],["Carne com catupiry",25]],
+queijo:[
+["Mussarela",25],["Mussarela com alho e bacon",25],["Pizza",25],["Margherita",25],["Bauru",25],["Portuguesa",25],["Dois queijos",25],["Quatro queijos",30]],
+frango:[["Frango catupiry",25],["Frango com cheddar",25],["Caipira",25],["Frango com mussarela",25]],
+calabresa:[["Calabresa com cebola",25],["Calabresa com catupiry",25],["Calabresa com cheddar",25],["Calabresa com mussarela",25]],
+palmito:[["Palmito",25],["Palmito com mussarela",25],["Palmito com catupiry",25],["Palmito com cheddar",25]],
+pepperoni:[["Pepperoni",25],["Pepperoni com mussarela",25]],
+brocolis:[["Brócolis, queijo e alho",25],["Brócolis com catupiry",25],["Brócolis com cheddar",25]],
+especiais:[["Carne, queijo, presunto, ovo, azeitona, milho e ervilha",50],["Frango, queijo, presunto, azeitona, milho e ervilha",50]],
+doces:[["Chocolate ao leite",25],["Avelã",25],["Chocolate branco",25],["Mista",25],["Prestígio",25],["Doce de leite",26],["Chocolate com banana",25]],
+bebidas:[["Coca-Cola 2 litros",17],["Fanta 2 litros",17],["Guaraná 2 litros",17],["Coca-Cola lata",8],["Guaraná lata",8]]
+};
+let cart=[];
+const money=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+function renderMenus(){
+ Object.entries(menus).forEach(([id,items])=>{
+  document.getElementById(id).innerHTML=items.map((x,i)=>`
+  <article class="item"><div><h3>${x[0]}</h3><p>Feita na hora • massa artesanal</p></div>
+  <div><div class="price">${money(x[1])}</div><button onclick="add('${id}',${i})">+ ADICIONAR</button></div></article>`).join("");
+ });
+}
+function add(id,i){const [name,price]=menus[id][i];const found=cart.find(x=>x.name===name);found?found.qty++:cart.push({name,price,qty:1});renderCart()}
+function remove(i){cart[i].qty--;if(cart[i].qty<=0)cart.splice(i,1);renderCart()}
+function renderCart(){
+ const qty=cart.reduce((a,x)=>a+x.qty,0), total=cart.reduce((a,x)=>a+x.qty*x.price,0);
+ document.getElementById("count").textContent=`(${qty})`;document.getElementById("total").textContent=money(total);
+ document.getElementById("cartList").innerHTML=cart.length?cart.map((x,i)=>`<div class="line"><span>${x.qty}× ${x.name}</span><span>${money(x.qty*x.price)} <button class="remove" onclick="remove(${i})">✕</button></span></div>`).join(""):'<div class="empty">Adicione os produtos acima.</div>';
+}
+function sendWhatsApp(){
+ if(!cart.length){alert("Adicione pelo menos um produto ao pedido.");return}
+ const total=cart.reduce((a,x)=>a+x.qty*x.price,0);
+ let msg="Olá! Gostaria de fazer um pedido na Fogazza Ferrari.%0A%0A";
+ cart.forEach(x=>msg+=`${x.qty}x ${x.name} — ${money(x.qty*x.price)}%0A`);
+ msg+=`%0A*Total: ${money(total)}*%0A%0AAguardo a confirmação do pedido.`;
+ location.href=`https://wa.me/${WPP}?text=${msg}`;
+}
+renderMenus();renderCart();
+</script>
+</body>
+</html>
